@@ -154,7 +154,6 @@ Please see [CONTRIBUTING](https://github.com/opensmarty/opensmarty-image/blob/ma
 
 ## Credits
 
-- [Libern](https://github.com/libern)
 - [Opensmarty](https://github.com/opensmarty)
 - [All Contributors](https://github.com/opensmarty/opensmarty-image/contributors)
 
