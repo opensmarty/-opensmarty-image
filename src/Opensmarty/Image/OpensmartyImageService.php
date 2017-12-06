@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use File;
 use Image;
 use Opensmarty\Image\Exception\OpensmartyImageException;
-use Opensmarty\Image\Exception\StoreImageException;
+use Opensmarty\Image\Exception\OpensmartyImageException;
 use Opensmarty\Image\Models\OpensmartyImageHash;
 use Opensmarty\Models\Image\OpensmartyImage;
 use Storage;
@@ -70,7 +70,7 @@ class OpensmartyImageService
     {
         // check valid
         if (!$file->isValid()) {
-            throw new StoreImageException($file->getErrorMessage());
+            throw new OpensmartyImageException($file->getErrorMessage());
         }
 
         // validate image
@@ -81,7 +81,7 @@ class OpensmartyImageService
             'image' => 'required|mimes:jpg,jpeg,bmp,png' . $mimes . '|max:' . $maxSizeAllowed . $additionValidatorRule,
         ]);
         if ($validator->fails()) {
-            throw new StoreImageException($validator->errors()->first());
+            throw new OpensmartyImageException($validator->errors()->first());
         }
 
         // file info
@@ -107,7 +107,7 @@ class OpensmartyImageService
 
 
         if (!File::exists($path_with_name)) {
-            throw new StoreImageException("File not found: " . $path_with_name);
+            throw new OpensmartyImageException("File not found: " . $path_with_name);
         }
 
         // read exif info
@@ -137,7 +137,7 @@ class OpensmartyImageService
         $file_sha1 = sha1_file($path_with_name);
         $final_file_sha1 = null;
         if ($file_sha1 === FALSE) {
-            throw new StoreImageException('Failed to create SHA1 for file: ' . $path_with_name);
+            throw new OpensmartyImageException('Failed to create SHA1 for file: ' . $path_with_name);
         }
 
         // final
@@ -146,7 +146,7 @@ class OpensmartyImageService
 
         // check directory
         if (!self::autoCreateDirectory($final_path_with_name)) {
-            throw new StoreImageException('Failed to make dir: ' . dirname($final_path_with_name));
+            throw new OpensmartyImageException('Failed to make dir: ' . dirname($final_path_with_name));
         }
 
         // save
@@ -168,7 +168,7 @@ class OpensmartyImageService
                 if (File::copy($path_with_name, $final_path_with_name)) {
                     @chmod($final_path_with_name, 0666 & ~umask());
                 } else {
-                    throw new StoreImageException('Failed to move file to path: ' . $final_path_with_name);
+                    throw new OpensmartyImageException('Failed to move file to path: ' . $final_path_with_name);
                 }
                 $final_file_sha1 = sha1_file($final_path_with_name);
                 $final_file_size = filesize($final_path_with_name);
@@ -188,7 +188,7 @@ class OpensmartyImageService
         }
 
         if (!$opensmarty_image) {
-            throw new StoreImageException('Failed to store image.');
+            throw new OpensmartyImageException('Failed to store image.');
         }
 
         return $opensmarty_image;
@@ -220,8 +220,8 @@ class OpensmartyImageService
     {
         try {
             $image = Image::make($source);
-        } catch (StoreImageException $e) {
-            throw new StoreImageException("OpensmartyImageService: Unable to make image [" + (string)$e + "]");
+        } catch (OpensmartyImageException $e) {
+            throw new OpensmartyImageException("OpensmartyImageService: Unable to make image [" + (string)$e + "]");
         }
 
         $is_allowed_animated_gif = $isAllowGIF && $isGIF;
@@ -235,7 +235,7 @@ class OpensmartyImageService
         $storage_path = $this->storagePath();
         $final_file_sha1 = null;
         if ($file_sha1 === FALSE || strlen($file_sha1) != 40) {
-            throw new StoreImageException('Invalid SHA1 for file.');
+            throw new OpensmartyImageException('Invalid SHA1 for file.');
         }
 
         // final
@@ -244,7 +244,7 @@ class OpensmartyImageService
 
         // check directory
         if (!self::autoCreateDirectory($final_path_with_name)) {
-            throw new StoreImageException('Failed to make dir: ' . dirname($final_path_with_name));
+            throw new OpensmartyImageException('Failed to make dir: ' . dirname($final_path_with_name));
         }
 
         // save
@@ -266,7 +266,7 @@ class OpensmartyImageService
                 if (file_put_contents($final_path_with_name, $source)) {
                     @chmod($final_path_with_name, 0666 & ~umask());
                 } else {
-                    throw new StoreImageException('Failed to move file to path: ' . $final_path_with_name);
+                    throw new OpensmartyImageException('Failed to move file to path: ' . $final_path_with_name);
                 }
                 $final_file_sha1 = sha1_file($final_path_with_name);
                 $final_file_size = filesize($final_path_with_name);
@@ -286,7 +286,7 @@ class OpensmartyImageService
         }
 
         if (!$opensmarty_image) {
-            throw new StoreImageException('Failed to store image.');
+            throw new OpensmartyImageException('Failed to store image.');
         }
 
         return $opensmarty_image;
@@ -565,7 +565,7 @@ class OpensmartyImageService
             $filteredData = substr($encodedData, strpos($encodedData, ",") + 1);
             $image_data = base64_decode($filteredData);
             return $image_data;
-        } catch (StoreImageException $e) {
+        } catch (OpensmartyImageException $e) {
             \Log::error("OpensmartyImageService: Unable to convert to image [" + (string)$e + "]");
             return null;
         }
@@ -577,7 +577,7 @@ class OpensmartyImageService
             $image_type = substr($encodedData, 0, strpos($encodedData, ","));
             $is_gif = str_contains($image_type, 'gif');
             return $is_gif;
-        } catch (StoreImageException $e) {
+        } catch (OpensmartyImageException $e) {
             \Log::error("OpensmartyImageService: Unable to convert to image [" + (string)$e + "]");
             return false;
         }

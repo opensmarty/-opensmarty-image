@@ -4,7 +4,7 @@ namespace Opensmarty\Image\Exception;
 
 use RuntimeException;
 
-class OpensmartyImageException extends RuntimeException
+class StoreImageException extends RuntimeException
 {
 
 }

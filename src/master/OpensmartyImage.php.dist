@@ -3,7 +3,7 @@
 
 use Opensmarty\Image\Models\OpensmartyImageBase;
 
-class Opensmarty extends OpensmartyImageBase
+class OpensmartyImage extends OpensmartyImageBase
 {
 
     /**

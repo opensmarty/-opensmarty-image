@@ -1,24 +1,24 @@
 <?php
 
-namespace Opensmarty\Image\Models;
+namespace Someline\Image\Models;
 
 
 use Prettus\Repository\Contracts\Presentable;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\PresentableTrait;
-use Opensmarty\Base\Models\BaseModel;
-use Opensmarty\Image\Models\Traits\OpensmartyPivotTrait;
+use Someline\Base\Models\BaseModel;
+use Someline\Image\Models\Traits\SomelinePivotTrait;
 
-class OpensmartyImageBase extends BaseModel implements Transformable, Presentable
+class SomelineImageBase extends BaseModel implements Transformable, Presentable
 {
-    use OpensmartyPivotTrait;
+    use SomelinePivotTrait;
     use PresentableTrait;
 
-    const MORPH_NAME = 'OpensmartyImage';
+    const MORPH_NAME = 'SomelineImage';
 
-    protected $table = 'opensmarty_images';
+    protected $table = 'someline_images';
 
-    protected $primaryKey = 'opensmarty_image_id';
+    protected $primaryKey = 'someline_image_id';
 
     protected $fillable = [
         'user_id', 'image_name', 'exif', 'is_gif', 'file_size', 'width', 'height'
@@ -32,9 +32,9 @@ class OpensmartyImageBase extends BaseModel implements Transformable, Presentabl
     /**
      * @return Int
      */
-    public function getOpensmartyImageId()
+    public function getSomelineImageId()
     {
-        return $this->opensmarty_image_id;
+        return $this->someline_image_id;
     }
 
     /**
@@ -98,7 +98,7 @@ class OpensmartyImageBase extends BaseModel implements Transformable, Presentabl
      */
     public function getImagePath()
     {
-        $storage_path = config("opensmarty-image.storage_path");
+        $storage_path = config("someline-image.storage_path");
         return $storage_path . $this->getImageName();
     }
 
@@ -108,7 +108,7 @@ class OpensmartyImageBase extends BaseModel implements Transformable, Presentabl
     public function transform()
     {
         return [
-            'opensmarty_image_id' => $this->getOpensmartyImageId(),
+            'someline_image_id' => $this->getSomelineImageId(),
             'image_name' => $this->getImageName(),
         ];
     }
@@ -118,11 +118,11 @@ class OpensmartyImageBase extends BaseModel implements Transformable, Presentabl
      */
     public function toSimpleArray()
     {
-        $opensmartyImage = $this;
+        $somelineImage = $this;
         return [
-            'opensmarty_image_id' => $opensmartyImage->getOpensmartyImageId(),
-            'opensmarty_image_url' => $opensmartyImage->getImageUrl(),
-            'thumbnail_image_url' => $opensmartyImage->getTypeImageUrl('thumbnail'),
+            'someline_image_id' => $somelineImage->getSomelineImageId(),
+            'someline_image_url' => $somelineImage->getImageUrl(),
+            'thumbnail_image_url' => $somelineImage->getTypeImageUrl('thumbnail'),
         ];
     }
 

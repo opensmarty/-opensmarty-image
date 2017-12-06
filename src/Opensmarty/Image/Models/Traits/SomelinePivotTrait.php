@@ -1,11 +1,11 @@
 <?php
 
-namespace Opensmarty\Image\Models\Traits;
+namespace Someline\Image\Models\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Opensmarty\Models\Image\OpensmartyImage;
+use Someline\Models\Image\SomelineImage;
 
-trait OpensmartyPivotTrait
+trait SomelinePivotTrait
 {
 
     /**

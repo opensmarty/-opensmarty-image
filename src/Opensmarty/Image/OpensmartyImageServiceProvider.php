@@ -9,7 +9,7 @@ use Opensmarty\Models\Image\OpensmartyImage;
 
 class OpensmartyImageServiceProvider extends ServiceProvider
 {
-    
+
     /**
      * Perform post-registration booting of services.
      *
@@ -22,16 +22,16 @@ class OpensmartyImageServiceProvider extends ServiceProvider
                 OpensmartyImage::MORPH_NAME => OpensmartyImage::class,
             ]);
         }
-        $this->loadMigrationsFrom(__DIR__.'/../../migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
         $this->publishes([
-            __DIR__.'/../../config/config.php'               => config_path('opensmarty-image.php'),
-            
+            __DIR__ . '/../../config/config.php' => config_path('opensmarty-image.php'),
+
             // master files
-            __DIR__.'/../../master/OpensmartyImage.php.dist' => app_path('Models/Image/OpensmartyImage.php'),
-        
+            __DIR__ . '/../../master/OpensmartyImage.php.dist' => app_path('Models/Image/OpensmartyImage.php'),
+
         ]);
     }
-    
+
     /**
      * Register the service provider.
      *
@@ -40,7 +40,7 @@ class OpensmartyImageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/config.php',
+            __DIR__ . '/../../config/config.php',
             'opensmarty-image'
         );
     }
